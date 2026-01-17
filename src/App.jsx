@@ -18,9 +18,26 @@ class App extends Component {
       imageUrl: '',
       boxes: [],
       route: 'signin',
-      isSignedIn: false
-     };
+      isSignedIn: false,
+      user: {
+        email: '',
+        id: '',
+        name: '',
+        entries: 0,
+        joined: ''
+      }
+     }
     }
+
+  loadUser = (data) => {
+    this.setState({user: {
+        email: data.email,
+        id: data.id,
+        name: data.name,
+        entries: data.entries,
+        joined: data.joined
+  }})
+  }
 
 
 displayFaceBox = (box) => {
@@ -35,6 +52,17 @@ onInputChange = (event) => {
 onButtonSubmit = () => {
   const proxiedUrl = `https://corsproxy.io/?${encodeURIComponent(this.state.input)}`;
     this.setState({ imageUrl: proxiedUrl });
+    fetch('http://localhost:3000/image', {
+      method: 'put',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        id: this.state.user.id
+      })
+    })
+      .then(response => response.json())
+      .then(count => {
+        this.setState(Object.assign(this.state.user, {entries: count}))
+      })
         }
 
 onRouteChange = (route) => {
@@ -47,7 +75,7 @@ onRouteChange = (route) => {
 }
 
   render() {
-  const  { isSignedIn, imageUrl, route, boxes} = this.state;
+  const  { isSignedIn, imageUrl, route, boxes, user} = this.state;
   return (
       <div className="App">
         <ParticlesBg type="cobweb" num={125} bg={true} />
@@ -55,7 +83,7 @@ onRouteChange = (route) => {
         { route === 'home'
         ? <div>
           <Logo />
-          <Rank />
+          <Rank name={user.name} entries={user.entries} />
           <ImageLinkForm 
           onInputChange={this.onInputChange} 
           onButtonSubmit={this.onButtonSubmit} 
@@ -67,8 +95,8 @@ onRouteChange = (route) => {
           </div>
          : (
           route === 'signin'
-          ? <Signin onRouteChange={this.onRouteChange} />
-          : <Register onRouteChange={this.onRouteChange} />
+          ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+          : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
          )
   }
           
