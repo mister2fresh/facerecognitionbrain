@@ -11,7 +11,6 @@ const FaceRecognition = ({ imageUrl, boxes, setBoxes }) => {
     setBoxes([]);
   }, [imageUrl]); 
 
-
   useEffect(() => {
     if (!imageUrl || !imgLoaded || !imgRef.current) return;
 

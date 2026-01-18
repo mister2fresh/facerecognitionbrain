@@ -9,11 +9,7 @@ import ParticlesBg from 'particles-bg';
 import Signin from './Components/Signin/Signin';
 import './App.css';
 
-
-class App extends Component {
-    constructor() {
-    super();
-    this.state = { 
+const initialState = {
       input: '',
       imageUrl: '',
       boxes: [],
@@ -27,6 +23,11 @@ class App extends Component {
         joined: ''
       }
      }
+
+class App extends Component {
+    constructor() {
+    super();
+    this.state = initialState;
     }
 
   loadUser = (data) => {
@@ -63,11 +64,12 @@ onButtonSubmit = () => {
       .then(count => {
         this.setState(Object.assign(this.state.user, {entries: count}))
       })
+      .catch(console.log)
         }
 
 onRouteChange = (route) => {
   if (route === 'signout') {
-    this.setState({isSignedIn: false})
+    this.setState(initialState)
   } else if (route === 'home') {
     this.setState({isSignedIn: true})
   }
