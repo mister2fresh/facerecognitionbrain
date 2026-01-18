@@ -53,7 +53,7 @@ onInputChange = (event) => {
 onButtonSubmit = () => {
   const proxiedUrl = `https://corsproxy.io/?${encodeURIComponent(this.state.input)}`;
     this.setState({ imageUrl: proxiedUrl });
-    fetch('http://localhost:3000/image', {
+    fetch('https://facerecognitionbrain-b1p4.onrender.com', {
       method: 'put',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
