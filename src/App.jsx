@@ -53,7 +53,7 @@ onInputChange = (event) => {
 onButtonSubmit = () => {
   const proxiedUrl = `https://corsproxy.io/?${encodeURIComponent(this.state.input)}`;
     this.setState({ imageUrl: proxiedUrl });
-    fetch('https://brain-api-kg0s.onrender.com', {
+    fetch('https://brain-api-kg0s.onrender.com/image', {
       method: 'put',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
